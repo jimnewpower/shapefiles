@@ -20,6 +20,16 @@ public record FileValueDouble(
     }
 
     @Override
+    public String toString() {
+        return
+                "Byte " + bytePosition +
+                        ", Field '" + fieldDescription + '\'' +
+                        ", Value " + value +
+                        ", Type Double" +
+                        ", Byte Order " + byteOrder;
+    }
+
+    @Override
     public ByteValue get() {
         return ByteValue.BYTE_VALUE_DOUBLE;
     }

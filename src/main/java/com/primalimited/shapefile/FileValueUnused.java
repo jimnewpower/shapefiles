@@ -2,13 +2,11 @@ package com.primalimited.shapefile;
 
 import java.nio.ByteOrder;
 
-public class FileValueUnused {
+public record FileValueUnused(int bytePosition) {
     private static final String UNUSED = "Unused";
 
-    private final FileValueInt fileValueInt;
-
-    public FileValueUnused(int bytePosition) {
-        this.fileValueInt = new FileValueBuilder()
+    public FileValueInt get() {
+        return new FileValueBuilder()
                 .bytePosition(bytePosition)
                 .intValue(0)
                 .fieldDescription(UNUSED)

@@ -18,6 +18,16 @@ public record FileValueInt(
     }
 
     @Override
+    public String toString() {
+        return
+                "Byte " + bytePosition +
+                ", Field '" + fieldDescription + '\'' +
+                ", Value " + value +
+                ", Type Integer" +
+                ", Byte Order " + byteOrder;
+    }
+
+    @Override
     public ByteValue get() {
         return ByteValue.BYTE_VALUE_INT;
     }

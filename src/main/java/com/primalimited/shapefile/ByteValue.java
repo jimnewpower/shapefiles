@@ -16,4 +16,8 @@ public record ByteValue(long bytes) {
     public long to16BitWords() {
         return bytes / 2;
     }
+
+    public ByteValue add(int nBytes) {
+        return new ByteValue(bytes() + nBytes);
+    }
 }
