@@ -10,6 +10,23 @@ import static org.junit.jupiter.api.Assertions.*;
 class PolylineTest {
 
     @Test
+    public void testPolylineSimple() {
+        Point[] points = new Point[] {
+                new Point(0, 0),
+                new Point(0, 10),
+                new Point(10, 10),
+                new Point(10, 0)
+        };
+
+        BoundingBox boundingBox = new BoundingBox(Bounds.of(0, 10), Bounds.of(0, 10));
+        Polyline polyline = new Polyline(boundingBox, List.of(points));
+
+        assertEquals(boundingBox, polyline.boundingBox());
+        assertEquals(1, polyline.numParts());
+        assertEquals(points.length, polyline.numPoints());
+    }
+
+    @Test
     public void testPolyline() {
         Point[] points = new Point[] {
                 new Point(0, 0),

@@ -7,14 +7,14 @@ import static org.junit.jupiter.api.Assertions.*;
 class BoundsTest {
 
     @Test
-    public void testValidBounds() {
+    public void validBoundsTest() {
         assertTrue(Bounds.of(0, 0).isValid());
         assertTrue(Bounds.of(0, 10).isValid());
         assertTrue(Bounds.of(-10, 10).isValid());
     }
 
     @Test
-    public void getters() {
+    public void gettersTest() {
         Bounds bounds = Bounds.of(3.2, 9.6);
         assertEquals(3.2, bounds.getMin(), 1e-10);
         assertEquals(9.6, bounds.getMax(), 1e-10);
@@ -22,7 +22,7 @@ class BoundsTest {
     }
 
     @Test
-    public void testContains() {
+    public void containsTest() {
         assertTrue(Bounds.of(0.0, 1.0).contains(0.0));
         assertTrue(Bounds.of(0.0, 1.0).contains(0.5));
         assertTrue(Bounds.of(0.0, 1.0).contains(1.0));

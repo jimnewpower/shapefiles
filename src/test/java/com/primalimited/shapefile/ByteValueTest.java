@@ -28,6 +28,11 @@ class ByteValueTest {
 
         assertEquals(100, ByteValue.FILE_HEADER.bytes());
         assertEquals(50, ByteValue.FILE_HEADER.to16BitWords());
+    }
 
+    @Test
+    public void testAdd() {
+        ByteValue value = new ByteValue(4).add(ByteValue.BYTE_VALUE_INT);
+        assertEquals(8, value.bytes());
     }
 }

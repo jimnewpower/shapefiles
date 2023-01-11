@@ -4,6 +4,10 @@ import java.util.List;
 import java.util.Objects;
 
 public record Polyline(BoundingBox boundingBox, int numParts, List<Integer> partStartIndices, List<Point> points) {
+    public Polyline(BoundingBox boundingBox, List<Point> points) {
+        this(boundingBox, 1, List.of(0), points);
+    }
+
     public Polyline {
         Objects.requireNonNull(boundingBox, "bounding box");
 
