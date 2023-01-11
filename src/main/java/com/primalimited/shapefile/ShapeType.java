@@ -4,20 +4,20 @@ import static java.util.Map.entry;
 import java.util.Map;
 
 public enum ShapeType {
-    NULL(0),
-    POINT(1),
-    POLYLINE(3),
-    POLYGON(5),
-    MULTIPOINT(8),
-    POINTZ(11),
-    POLYLINEZ(13),
-    POLYGONZ(15),
-    MULTIPOINTZ(18),
-    POINTM(21),
-    POLYLINEM(23),
-    POLYGONM(25),
-    MULTIPOINTM(28),
-    MULTIPATCH(31);
+    NULL(0, false),
+    POINT(1, false),
+    POLYLINE(3, true),
+    POLYGON(5, true),
+    MULTIPOINT(8, true),
+    POINTZ(11, false),
+    POLYLINEZ(13, true),
+    POLYGONZ(15, true),
+    MULTIPOINTZ(18, true),
+    POINTM(21, false),
+    POLYLINEM(23, true),
+    POLYGONM(25, true),
+    MULTIPOINTM(28, true),
+    MULTIPATCH(31, true);
 
     private static Map<Integer, ShapeType> map = null;
 
@@ -48,12 +48,18 @@ public enum ShapeType {
     }
 
     private final int value;
+    private final boolean variableRecordLength;
 
-    ShapeType(int value) {
+    ShapeType(int value, boolean variableRecordLength) {
         this.value = value;
+        this.variableRecordLength = variableRecordLength;
     }
 
     public int getValue() {
         return value;
+    }
+
+    public boolean isVariableRecordLength() {
+        return variableRecordLength;
     }
 }
