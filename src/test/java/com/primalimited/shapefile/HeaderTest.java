@@ -9,8 +9,14 @@ import static org.junit.jupiter.api.Assertions.*;
 class HeaderTest {
 
     private Header createMockHeader() {
-        ByteValue fileLength = new ByteValue(684);
         ShapeType shapeType = ShapeType.POINT;
+        List<Point> points = List.of(
+                new Point(-105, 35),
+                new Point(-105, 45),
+                new Point(-100, 45),
+                new Point(-100, 35)
+        );
+        ByteValue fileLength = new MainFile().computeFileLength(shapeType, points.size());
         Bounds xBounds = Bounds.of(-105, -100);
         Bounds yBounds = Bounds.of(35, 45);
         BoundingBox xyBoundingBox = new BoundingBox(xBounds, yBounds);
