@@ -1,7 +1,8 @@
 package com.primalimited.shapefile;
 
-import static java.util.Map.entry;
 import java.util.Map;
+
+import static java.util.Map.entry;
 
 public enum ShapeType {
     NULL(0, false),

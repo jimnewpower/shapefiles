@@ -1,8 +1,5 @@
 package com.primalimited.shapefile;
 
-import java.text.NumberFormat;
-import java.util.Objects;
-
 public interface Bounds {
     /**
      * Return the minimum value
