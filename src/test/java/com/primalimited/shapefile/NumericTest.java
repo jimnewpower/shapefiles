@@ -22,4 +22,9 @@ class NumericTest {
         value = Numeric.MIN_VALID_VALUE * 10;
         assertFalse(Numeric.isValid(value));
     }
+
+    @Test
+    public void testNoDataValue() {
+        assertFalse(Numeric.isValid(Numeric.NO_DATA_VALUE));
+    }
 }

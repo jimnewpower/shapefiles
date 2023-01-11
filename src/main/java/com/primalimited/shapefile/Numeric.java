@@ -9,6 +9,7 @@ public class Numeric {
     represent a "no data" value.
      */
     static final double MIN_VALID_VALUE = -10e38;
+    static final double NO_DATA_VALUE = -15e38;
 
     public static boolean isValid(Double number) {
         if (number.isInfinite() || number.isNaN())
