@@ -2,7 +2,11 @@ package com.primalimited.shapefile;
 
 import org.junit.jupiter.api.Test;
 
+import java.nio.ByteOrder;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.DoubleStream;
+import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -28,6 +32,19 @@ class HeaderTest {
     @Test
     public void testBuildingIntegerFields() {
         List<FileValueInt> list = createMockHeader().buildIntegerFields();
+
+        int[] bigEndianValues = list.stream()
+                .filter(fv -> fv.byteOrder() == ByteOrder.BIG_ENDIAN)
+                .flatMapToInt(fv -> IntStream.of(fv.value()))
+                .toArray();
+        System.out.println(Arrays.toString(bigEndianValues));
+
+        int[] littleEndianValues = list.stream()
+                .filter(fv -> fv.byteOrder() == ByteOrder.LITTLE_ENDIAN)
+                .flatMapToInt(fv -> IntStream.of(fv.value()))
+                .toArray();
+        System.out.println(Arrays.toString(littleEndianValues));
+
         for (FileValueInt fileValueInt: list)
             System.out.println(fileValueInt);
     }
@@ -35,6 +52,12 @@ class HeaderTest {
     @Test
     public void testBuildingDoubleFields() {
         List<FileValueDouble> list = createMockHeader().buildDoubleFields();
+
+        double[] values = list.stream()
+                .flatMapToDouble(fv -> DoubleStream.of(fv.value()))
+                .toArray();
+        System.out.println(Arrays.toString(values));
+
         for (FileValueDouble fileValueDouble: list)
             System.out.println(fileValueDouble);
     }

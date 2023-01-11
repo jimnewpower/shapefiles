@@ -6,6 +6,11 @@ import java.util.List;
 import java.util.Objects;
 
 public record Header(ByteValue fileLength, ShapeType shapeType, BoundingBox xyBoundingBox, Bounds zBounds, Bounds mBounds) {
+    public static final int BIG_ENDIAN_START = 0;
+    public static final int BIG_ENDIAN_N_BYTES = 28;
+    public static final int LITTLE_ENDIAN_START = 28;
+    public static final int LITTLE_ENDIAN_N_BYTES = 72;
+
     public Header {
         Objects.requireNonNull(fileLength, "file length");
         Objects.requireNonNull(shapeType, "shape type");
@@ -112,5 +117,12 @@ public record Header(ByteValue fileLength, ShapeType shapeType, BoundingBox xyBo
         list.add(new FileValueDouble(byteValue.bytes(), "Mmax", mBounds.getMax(), byteOrder));
 
         return List.copyOf(list);
+    }
+
+    public Header createIndexHeader(int nRecords) {
+        // Index file has same header format as the main file, but its own file length must be specified.
+        int nBytes = 100 + (nRecords * 8);
+        ByteValue indexFileLength = new ByteValue(nBytes);
+        return new Header(indexFileLength, shapeType, xyBoundingBox, zBounds, mBounds);
     }
 }
