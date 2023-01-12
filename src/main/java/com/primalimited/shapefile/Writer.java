@@ -1,6 +1,7 @@
 package com.primalimited.shapefile;
 
 import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -13,7 +14,37 @@ import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 
 public interface Writer {
-    Path write(Path directory, String baseFilename, Header header, Dataset dataset) throws IOException;
+
+    default Path write(Path directory, String baseFilename, Header header, Dataset dataset) throws IOException {
+        checkArgs(directory, baseFilename, header, dataset);
+
+        Path mainPath = createMainPath(directory, baseFilename);
+        Path indexPath = createIndexPath(directory, baseFilename);
+
+        try (
+            FileOutputStream mainFileOutputStream = new FileOutputStream(mainPath.toFile());
+            BufferedOutputStream mainFileBufferedOutputStream = new BufferedOutputStream(mainFileOutputStream);
+            FileOutputStream indexFileOutputStream = new FileOutputStream(indexPath.toFile());
+            BufferedOutputStream indexFileBufferedOutputStream = new BufferedOutputStream(indexFileOutputStream)
+        ) {
+            writeMainFile(header, dataset, mainFileBufferedOutputStream);
+            writeIndexFile(header, dataset, indexFileBufferedOutputStream);
+        }
+
+        return mainPath;
+    }
+
+    void writeMainFile(
+        Header header,
+        Dataset dataset,
+        BufferedOutputStream mainFileOutputStream
+    ) throws IOException;
+
+    void writeIndexFile(
+        Header header,
+        Dataset dataset,
+        BufferedOutputStream indexFileOutputStream
+    ) throws IOException;
 
     default void checkArgs(Path directory, String baseFilename, Header header, Dataset dataset) {
         Objects.requireNonNull(directory, "directory");

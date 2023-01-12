@@ -74,8 +74,10 @@ class WriterPointTest {
         ) {
             Header header = createMockHeader();
             Dataset dataset = Dataset.pointsDataset(points);
+
             WriterPoint writer = (WriterPoint)new WriterFactory().create(header.shapeType());
-            writer.write(header, dataset, mainBufferedOutputStream, indexBufferedOutputStream);
+            writer.writeMainFile(header, dataset, mainBufferedOutputStream);
+            writer.writeIndexFile(header, dataset, indexBufferedOutputStream);
 
             testHeader(header, mainOutputStream.toByteArray());
             testPoints(points, mainOutputStream.toByteArray());

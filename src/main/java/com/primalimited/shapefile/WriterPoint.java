@@ -1,52 +1,17 @@
 package com.primalimited.shapefile;
 
 import java.io.BufferedOutputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.nio.file.Path;
 import java.util.List;
 
 class WriterPoint implements Writer {
 
     @Override
-    public Path write(Path directory, String baseFilename, Header header, Dataset dataset) throws IOException {
-        checkArgs(directory, baseFilename, header, dataset);
-
-        Path mainPath = createMainPath(directory, baseFilename);
-        Path indexPath = createIndexPath(directory, baseFilename);
-
-        write(header, dataset, mainPath, indexPath);
-        return mainPath;
-    }
-
-    private void write(
-        Header header, Dataset dataset, Path mainPath, Path indexPath
-    ) throws IOException {
-        try (
-            FileOutputStream mainFileOutputStream = new FileOutputStream(mainPath.toFile());
-            BufferedOutputStream mainFileBufferedOutputStream = new BufferedOutputStream(mainFileOutputStream);
-            FileOutputStream indexFileOutputStream = new FileOutputStream(indexPath.toFile());
-            BufferedOutputStream indexFileBufferedOutputStream = new BufferedOutputStream(indexFileOutputStream)
-        ) {
-            write(header, dataset, mainFileBufferedOutputStream, indexFileBufferedOutputStream);
-        }
-    }
-
-    void write(
+    public void writeMainFile(
         Header header,
         Dataset dataset,
-        BufferedOutputStream mainFileOutputStream,
-        BufferedOutputStream indexFileOutputStream
-    ) throws IOException {
-        writeMainFile(header, dataset.points(), mainFileOutputStream);
-        writeIndexFile(header, dataset.points(), indexFileOutputStream);
-    }
-
-    private void writeMainFile(
-        Header header,
-        List<Point> points,
         BufferedOutputStream mainFileOutputStream
     ) throws IOException {
         writeHeader(header, mainFileOutputStream);
@@ -63,6 +28,7 @@ class WriterPoint implements Writer {
 
         int recordIndex = 1;
 
+        List<Point> points = dataset.points();
         for (Point point: points) {
             recordHeaderBuffer.putInt(recordIndex++);
             recordHeaderBuffer.putInt((int)contentLength.to16BitWords());
@@ -79,12 +45,13 @@ class WriterPoint implements Writer {
         mainFileOutputStream.flush();
     }
 
-    private void writeIndexFile(
+    @Override
+    public void writeIndexFile(
         Header header,
-        List<Point> points,
+        Dataset dataset,
         BufferedOutputStream indexFileOutputStream
     ) throws IOException {
-        int nRecords = points.size();
+        int nRecords = dataset.points().size();
         writeHeader(header.createIndexHeader(nRecords), indexFileOutputStream);
 
         ByteValue contentLength = ByteValue.BYTE_VALUE_INT;//shape type
