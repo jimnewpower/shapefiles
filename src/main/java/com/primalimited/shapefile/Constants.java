@@ -10,4 +10,5 @@ public class Constants {
     // File header constants.
     public static final int FILE_CODE = 9994;
     public static final int VERSION = 1000;
+    public static final ByteValue FILE_HEADER_SIZE_BYTES = new ByteValue(100);
 }

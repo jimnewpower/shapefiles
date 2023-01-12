@@ -14,5 +14,7 @@ class ConstantsTest {
         assertEquals("prj", Constants.PRJ_FILE_EXTENSION);
         assertEquals(9994, Constants.FILE_CODE);
         assertEquals(1000, Constants.VERSION);
+        assertEquals(100, Constants.FILE_HEADER_SIZE_BYTES.bytes());
+        assertEquals(50, Constants.FILE_HEADER_SIZE_BYTES.to16BitWords());
     }
 }
