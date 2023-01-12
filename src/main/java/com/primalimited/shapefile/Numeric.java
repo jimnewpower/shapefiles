@@ -1,5 +1,9 @@
 package com.primalimited.shapefile;
 
+/**
+ * Handle valid, invalid, and no-data values for ESRI shapefiles,
+ * based on the specification.
+ */
 public class Numeric {
     /*
     Floating point numbers must be numeric values. Positive infinity, negative infinity, and

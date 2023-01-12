@@ -1,5 +1,8 @@
 package com.primalimited.shapefile;
 
+/**
+ * Bounds implementation that is immutable.
+ */
 record ImmutableBounds(
         double min,
         double max

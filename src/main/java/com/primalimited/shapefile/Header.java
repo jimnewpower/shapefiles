@@ -5,11 +5,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Information to define the 100-byte file header for ESRI Shapefiles.
+ */
 public record Header(ByteValue fileLength, ShapeType shapeType, BoundingBox xyBoundingBox, Bounds zBounds, Bounds mBounds) {
     public static final int BIG_ENDIAN_START = 0;
     public static final int BIG_ENDIAN_N_BYTES = 28;
     public static final int LITTLE_ENDIAN_START = 28;
     public static final int LITTLE_ENDIAN_N_BYTES = 72;
+
+    public Header(ByteValue fileLength, ShapeType shapeType, BoundingBox xyBoundingBox) {
+        this(fileLength, shapeType, xyBoundingBox, Bounds.of(0, 0), Bounds.of(0, 0));
+    }
 
     public Header {
         Objects.requireNonNull(fileLength, "file length");
@@ -19,6 +26,10 @@ public record Header(ByteValue fileLength, ShapeType shapeType, BoundingBox xyBo
         Objects.requireNonNull(mBounds, "m bounds");
     }
 
+    /**
+     * Builds list of the integer fields in the file header.
+     * @return unmodifiable list of the file header integer fields.
+     */
     public List<FileValueInt> buildIntegerFields() {
         List<FileValueInt> list = new ArrayList<>();
 
@@ -73,6 +84,10 @@ public record Header(ByteValue fileLength, ShapeType shapeType, BoundingBox xyBo
         return List.copyOf(list);
     }
 
+    /**
+     * Builds a list of the file header double-precision fields.
+     * @return unmodifiable list of file header double-precision fields.
+     */
     public List<FileValueDouble> buildDoubleFields() {
         List<FileValueDouble> list = new ArrayList<>();
 
@@ -119,9 +134,16 @@ public record Header(ByteValue fileLength, ShapeType shapeType, BoundingBox xyBo
         return List.copyOf(list);
     }
 
+    /**
+     * Given a main file header, create the index file header, using nRecords to
+     * determine the size of the index file.
+     * @param nRecords number of records in the shapefile.
+     * @return a header for the index (.shx) file.
+     */
     public Header createIndexHeader(int nRecords) {
         // Index file has same header format as the main file, but its own file length must be specified.
-        int nBytes = 100 + (nRecords * 8);
+        // Each record in the index file consists of two integers.
+        int nBytes = (int)Constants.FILE_HEADER_SIZE_BYTES.bytes() + (nRecords * 8);
         ByteValue indexFileLength = new ByteValue(nBytes);
         return new Header(indexFileLength, shapeType, xyBoundingBox, zBounds, mBounds);
     }

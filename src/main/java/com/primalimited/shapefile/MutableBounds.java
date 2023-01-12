@@ -1,5 +1,8 @@
 package com.primalimited.shapefile;
 
+/**
+ * Mutable bounds implementation (see expandTo() method).
+ */
 public class MutableBounds implements Bounds {
     private double min;
     private double max;

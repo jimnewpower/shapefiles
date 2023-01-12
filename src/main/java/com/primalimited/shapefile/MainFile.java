@@ -1,7 +1,19 @@
 package com.primalimited.shapefile;
 
+/**
+ * Functions related to the main (.shp) shapefile.
+ */
 public class MainFile {
 
+    /**
+     * Given a shape type and the number of records, compute the length of
+     * the main (.shp) shapefile (works only for shape types that do not vary
+     * in record length, e.g. Point types).
+     *
+     * @param shapeType non-variable shape type.
+     * @param nRecords number of records in the shapefile.
+     * @return ByteValue instance representing the size of the main (.shp) shapefile.
+     */
     public ByteValue computeFileLength(
             ShapeType shapeType,
             int nRecords

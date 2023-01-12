@@ -3,6 +3,9 @@ package com.primalimited.shapefile;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Record that repesents a Polyline.
+ */
 public record Polyline(BoundingBox boundingBox, int numParts, List<Integer> partStartIndices, List<Point> points) {
     public Polyline(BoundingBox boundingBox, List<Point> points) {
         this(boundingBox, 1, List.of(0), points);
