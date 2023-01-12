@@ -5,20 +5,105 @@ import java.util.Map;
 import static java.util.Map.entry;
 
 public enum ShapeType {
-    NULL(0, false),
-    POINT(1, false),
-    POLYLINE(3, true),
-    POLYGON(5, true),
-    MULTIPOINT(8, true),
-    POINTZ(11, false),
-    POLYLINEZ(13, true),
-    POLYGONZ(15, true),
-    MULTIPOINTZ(18, true),
-    POINTM(21, false),
-    POLYLINEM(23, true),
-    POLYGONM(25, true),
-    MULTIPOINTM(28, true),
-    MULTIPATCH(31, true);
+    NULL(0, false) {
+        @Override
+        ByteValue recordHeader() {
+            return new ByteValue(4);//Shape type
+        }
+    },
+    POINT(1, false) {
+        @Override
+        ByteValue recordHeader() {
+            // Point record has the shape type and two doubles (x, y).
+            ByteValue contentLength = ByteValue.BYTE_VALUE_INT;//shape type
+            contentLength = contentLength.add(ByteValue.BYTE_VALUE_DOUBLE);//x
+            contentLength = contentLength.add(ByteValue.BYTE_VALUE_DOUBLE);//y
+            return contentLength;
+        }
+    },
+    POLYLINE(3, true) {
+        @Override
+        ByteValue recordHeader() {
+            throw new IllegalStateException(String.format("Shape type %s has variable-length record headers.", this));
+        }
+    },
+    POLYGON(5, true) {
+        @Override
+        ByteValue recordHeader() {
+            throw new IllegalStateException(String.format("Shape type %s has variable-length record headers.", this));
+        }
+    },
+    MULTIPOINT(8, true) {
+        @Override
+        ByteValue recordHeader() {
+            throw new IllegalStateException(String.format("Shape type %s has variable-length record headers.", this));
+        }
+    },
+    POINTZ(11, false) {
+        @Override
+        ByteValue recordHeader() {
+            // PointZ record has the shape type and four doubles (x, y, z, m).
+            ByteValue contentLength = ByteValue.BYTE_VALUE_INT;//shape type
+            contentLength = contentLength.add(ByteValue.BYTE_VALUE_DOUBLE);//x
+            contentLength = contentLength.add(ByteValue.BYTE_VALUE_DOUBLE);//y
+            contentLength = contentLength.add(ByteValue.BYTE_VALUE_DOUBLE);//z
+            contentLength = contentLength.add(ByteValue.BYTE_VALUE_DOUBLE);//m
+            return contentLength;
+        }
+    },
+    POLYLINEZ(13, true) {
+        @Override
+        ByteValue recordHeader() {
+            throw new IllegalStateException(String.format("Shape type %s has variable-length record headers.", this));
+        }
+    },
+    POLYGONZ(15, true) {
+        @Override
+        ByteValue recordHeader() {
+            throw new IllegalStateException(String.format("Shape type %s has variable-length record headers.", this));
+        }
+    },
+    MULTIPOINTZ(18, true) {
+        @Override
+        ByteValue recordHeader() {
+            throw new IllegalStateException(String.format("Shape type %s has variable-length record headers.", this));
+        }
+    },
+    POINTM(21, false) {
+        @Override
+        ByteValue recordHeader() {
+            // PointM record has the shape type and three doubles (x, y, m).
+            ByteValue contentLength = ByteValue.BYTE_VALUE_INT;//shape type
+            contentLength = contentLength.add(ByteValue.BYTE_VALUE_DOUBLE);//x
+            contentLength = contentLength.add(ByteValue.BYTE_VALUE_DOUBLE);//y
+            contentLength = contentLength.add(ByteValue.BYTE_VALUE_DOUBLE);//m
+            return contentLength;
+        }
+    },
+    POLYLINEM(23, true) {
+        @Override
+        ByteValue recordHeader() {
+            throw new IllegalStateException(String.format("Shape type %s has variable-length record headers.", this));
+        }
+    },
+    POLYGONM(25, true) {
+        @Override
+        ByteValue recordHeader() {
+            throw new IllegalStateException(String.format("Shape type %s has variable-length record headers.", this));
+        }
+    },
+    MULTIPOINTM(28, true) {
+        @Override
+        ByteValue recordHeader() {
+            throw new IllegalStateException(String.format("Shape type %s has variable-length record headers.", this));
+        }
+    },
+    MULTIPATCH(31, true) {
+        @Override
+        ByteValue recordHeader() {
+            throw new IllegalStateException(String.format("Shape type %s has variable-length record headers.", this));
+        }
+    };
 
     private static Map<Integer, ShapeType> map = null;
 
@@ -55,6 +140,8 @@ public enum ShapeType {
         this.value = value;
         this.variableRecordLength = variableRecordLength;
     }
+
+    abstract ByteValue recordHeader();
 
     public int getValue() {
         return value;

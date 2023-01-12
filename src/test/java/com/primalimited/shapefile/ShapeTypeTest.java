@@ -50,4 +50,25 @@ class ShapeTypeTest {
         assertThrows(IllegalArgumentException.class, () -> ShapeType.getFromValue(32));
     }
 
+    @Test
+    public void recordLengthTest() {
+        for (ShapeType shapeType : ShapeType.values()) {
+            if (!shapeType.isVariableRecordLength()) {
+                switch (shapeType) {
+                    case NULL -> {
+                        assertEquals(4, shapeType.recordHeader().bytes());
+                    }
+                    case POINT -> {
+                        assertEquals(20, shapeType.recordHeader().bytes());
+                    }
+                    case POINTZ -> {
+                        assertEquals(36, shapeType.recordHeader().bytes());
+                    }
+                    case POINTM -> {
+                        assertEquals(28, shapeType.recordHeader().bytes());
+                    }
+                }
+            }
+        }
+    }
 }
