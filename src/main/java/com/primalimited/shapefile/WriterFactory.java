@@ -33,6 +33,7 @@ public class WriterFactory {
             case MULTIPOINTZ -> {
             }
             case POINTM -> {
+                return new WriterPointM();
             }
             case POLYLINEM -> {
             }

@@ -15,6 +15,9 @@ public interface Dataset {
     default List<PointZ> pointZs() {
         return Collections.emptyList();
     }
+    default List<PointM> pointMs() {
+        return Collections.emptyList();
+    }
 
     static Dataset pointsDataset(List<Point> points) {
         return new Dataset() {
@@ -40,6 +43,20 @@ public interface Dataset {
             @Override
             public List<PointZ> pointZs() {
                 return pointZs;
+            }
+        };
+    }
+
+    static Dataset pointMsDataset(List<PointM> pointMs) {
+        return new Dataset() {
+            @Override
+            public ShapeType shapeType() {
+                return ShapeType.POINTM;
+            }
+
+            @Override
+            public List<PointM> pointMs() {
+                return pointMs;
             }
         };
     }
