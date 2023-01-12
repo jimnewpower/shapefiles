@@ -4,7 +4,9 @@ package com.primalimited.shapefile;
  * Filename utility functions.
  */
 public class Filenames {
-    private static final String EXTENSION_PATTERN = "(?<!^)[.]" + "[^.]*$";
+    private static final String MATCH_DOT_NOT_AT_BEGINNING_PATTERN = "(?<!^)[.]";
+    private static final String LAST_EXTENSION_PATTERN = "[^.]*$";
+    // Pattern that accepts only alphanumeric and period characters, with  length no larger than 255
     private static final String VALID_FILENAME_PATTERN = "^[A-za-z0-9.]{1,255}$";
 
     /**
@@ -28,7 +30,9 @@ public class Filenames {
         if (filename == null || filename.isEmpty())
             return filename;
 
-        return filename.replaceAll(EXTENSION_PATTERN, "");
+        String pattern = MATCH_DOT_NOT_AT_BEGINNING_PATTERN
+                + LAST_EXTENSION_PATTERN;
+        return filename.replaceAll(pattern, "");
     }
 
     /**
