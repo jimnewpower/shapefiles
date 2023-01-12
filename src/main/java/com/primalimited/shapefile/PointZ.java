@@ -1,10 +1,10 @@
 package com.primalimited.shapefile;
 
 /**
- * Record that represents a Point.
+ * Record for a shapefile PointZ, which has values for x, y, z and m (measure).
  */
-public record Point(double x, double y) {
-    public Point {
+public record PointZ(double x, double y, double z, double m) {
+    public PointZ {
         if (Double.isNaN(x) || Double.isInfinite(x))
             throw new IllegalArgumentException(String.format("Invalid x (%g) argument.", x));
         if (Double.isNaN(y) || Double.isInfinite(y))
