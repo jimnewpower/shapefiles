@@ -1,5 +1,8 @@
 package com.primalimited.shapefile;
 
+/**
+ * One-dimensional bounds.
+ */
 public interface Bounds {
     /**
      * Return the minimum value
@@ -161,5 +164,4 @@ public interface Bounds {
             return false;
         return true;
     }
-
 }
