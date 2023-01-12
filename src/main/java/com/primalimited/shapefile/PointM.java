@@ -1,5 +1,8 @@
 package com.primalimited.shapefile;
 
+/**
+ * Point with x,y and m (measure) value.
+ */
 public record PointM(double x, double y, double m) {
     public PointM {
         if (Double.isNaN(x) || Double.isInfinite(x))
