@@ -3,7 +3,10 @@ package com.primalimited.shapefile;
 import java.nio.ByteOrder;
 import java.util.Objects;
 
-public class ContentLength {
+/**
+ * Content length, created in nBytes, but using 16-bit words.
+ */
+class ContentLength {
     private static final String DESCRIPTION = "Content Length (16-bit words)";
 
     private final ByteValue byteValue;
