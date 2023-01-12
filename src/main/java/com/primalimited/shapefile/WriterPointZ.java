@@ -7,21 +7,17 @@ import java.nio.ByteOrder;
 import java.util.List;
 
 /**
- * Shapefile writer for Point record data.
+ * Shapefile writer for PointZ data type.
  */
-class WriterPoint implements Writer {
+public class WriterPointZ implements Writer {
 
     @Override
-    public void writeMainFile(
-        Header header,
-        Dataset dataset,
-        BufferedOutputStream mainFileOutputStream
-    ) throws IOException {
+    public void writeMainFile(Header header, Dataset dataset, BufferedOutputStream mainFileOutputStream) throws IOException {
         writeHeader(header, mainFileOutputStream);
 
         final int shapeType = header.shapeType().getValue();
 
-        // Point record has the shape type and two doubles (x, y).
+        // Point record has the shape type and four doubles (x, y, z, m).
         ByteValue contentLength = header.shapeType().recordHeader();
 
         ByteBuffer recordHeaderBuffer = ByteBuffer
@@ -33,16 +29,29 @@ class WriterPoint implements Writer {
 
         int recordIndex = 1;
 
-        List<Point> points = dataset.points();
-        for (Point point: points) {
+        /*
+        Position Field Value Type Number Order
+        Byte 0 Shape Type 11 Integer 1 Little
+        Byte 4 X X Double 1 Little
+        Byte 12 Y Y Double 1 Little
+        Byte 20 Z Z Double 1 Little
+        Byte 28 Measure M Double 1 Little
+         */
+
+        List<PointZ> pointZs = dataset.pointZs();
+        for (PointZ pointZ: pointZs) {
+            // Record header
             recordHeaderBuffer.putInt(recordIndex++);
             recordHeaderBuffer.putInt((int)contentLength.to16BitWords());
             mainFileOutputStream.write(recordHeaderBuffer.array());
             recordHeaderBuffer.rewind();
 
+            // Record values
             recordBuffer.putInt(shapeType);
-            recordBuffer.putDouble(point.x());
-            recordBuffer.putDouble(point.y());
+            recordBuffer.putDouble(pointZ.x());
+            recordBuffer.putDouble(pointZ.y());
+            recordBuffer.putDouble(pointZ.z());
+            recordBuffer.putDouble(pointZ.m());
             mainFileOutputStream.write(recordBuffer.array());
             recordBuffer.rewind();
         }
@@ -51,12 +60,8 @@ class WriterPoint implements Writer {
     }
 
     @Override
-    public void writeIndexFile(
-        Header header,
-        Dataset dataset,
-        BufferedOutputStream indexFileOutputStream
-    ) throws IOException {
-        int nRecords = dataset.points().size();
+    public void writeIndexFile(Header header, Dataset dataset, BufferedOutputStream indexFileOutputStream) throws IOException {
+        int nRecords = dataset.pointZs().size();
         writeIndexFile(header, nRecords, indexFileOutputStream);
     }
 }

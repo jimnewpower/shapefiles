@@ -72,6 +72,28 @@ public interface Writer {
         BufferedOutputStream indexFileOutputStream
     ) throws IOException;
 
+    default void writeIndexFile(Header header, int nRecords, BufferedOutputStream indexFileOutputStream) throws IOException {
+        writeHeader(header.createIndexHeader(nRecords), indexFileOutputStream);
+
+        ByteValue contentLength = header.shapeType().recordHeader();
+
+        ByteBuffer indexRecordBuffer = ByteBuffer
+                .allocate((int)ByteValue.RECORD_HEADER.bytes())
+                .order(ByteOrder.BIG_ENDIAN);
+
+        int offset = 0;
+
+        for (int i = 0; i < nRecords; i++) {
+            indexRecordBuffer.putInt(offset);
+            indexRecordBuffer.putInt((int)contentLength.to16BitWords());
+            indexFileOutputStream.write(indexRecordBuffer.array());
+            indexRecordBuffer.rewind();
+            offset += contentLength.bytes();
+        }
+
+        indexFileOutputStream.flush();
+    }
+
     /**
      * Check arguments supplied to write(), throwing IllegalArgumentExceptions as necessary.
      *
@@ -94,9 +116,6 @@ public interface Writer {
 
         Objects.requireNonNull(header, "header");
         Objects.requireNonNull(dataset, "dataset");
-        List<Point> points = dataset.points();
-        if (points == null || points.isEmpty())
-            throw new IllegalArgumentException("Dataset must contain non-null, non-empty points list.");
     }
 
     /**

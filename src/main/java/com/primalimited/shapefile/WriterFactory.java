@@ -24,6 +24,7 @@ public class WriterFactory {
             case MULTIPOINT -> {
             }
             case POINTZ -> {
+                return new WriterPointZ();
             }
             case POLYLINEZ -> {
             }
