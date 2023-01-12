@@ -4,6 +4,9 @@ import java.util.Map;
 
 import static java.util.Map.entry;
 
+/**
+ * ESRI Shapefile shape type definitions.
+ */
 public enum ShapeType {
     NULL(0, false) {
         @Override
@@ -143,10 +146,22 @@ public enum ShapeType {
 
     abstract ByteValue recordHeader();
 
+    /**
+     * The integer value of a shape type as defined in the ESRI Shapefile
+     * technical description.
+     *
+     * @return the integer value of a shape type.
+     */
     public int getValue() {
         return value;
     }
 
+    /**
+     * Some records are fixed-length (e.g. Point types), while others are
+     * variable-length (e.g. Polyline, Polygon).
+     *
+     * @return true if shape type records can be variable length, false otherwise.
+     */
     public boolean isVariableRecordLength() {
         return variableRecordLength;
     }

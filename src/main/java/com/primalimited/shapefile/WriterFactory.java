@@ -1,6 +1,15 @@
 package com.primalimited.shapefile;
 
+/**
+ * Factory to create writers based on shape type.
+ */
 public class WriterFactory {
+
+    /**
+     * Create writer from shape type.
+     * @param shapeType the shape type.
+     * @return new instance of a shapefile writer.
+     */
     public Writer create(ShapeType shapeType) {
         switch (shapeType) {
             case NULL -> {
@@ -33,6 +42,6 @@ public class WriterFactory {
             case MULTIPATCH -> {
             }
         }
-        return null;
+        throw new IllegalStateException(String.format("Writer not yet defined for shape type %s", shapeType.name()));
     }
 }
