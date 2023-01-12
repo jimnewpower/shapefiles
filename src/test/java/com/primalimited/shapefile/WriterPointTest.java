@@ -7,11 +7,12 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class WriterTest {
+class WriterPointTest {
 
     private List<Point> createMockPoints() {
         return List.of(
@@ -38,24 +39,27 @@ class WriterTest {
         List<Point> points = createMockPoints();
 
         Path mainPath = Files.createTempFile("shape", ".shp");
-        Path indexPath = Files.createTempFile("shape", ".shx");
-        System.out.println(mainPath);
-        System.out.println(indexPath);
+
+        Path parentDirectory = mainPath.getParent();
+        String filename = mainPath.toFile().getName();
+        String baseFilename = Filenames.removeFileExtension(filename);
 
         Header header = createMockHeader();
+        Dataset dataset = Dataset.pointsDataset(points);
 
-        try (
-            FileOutputStream mainFileOutputStream = new FileOutputStream(mainPath.toFile());
-            BufferedOutputStream mainFileBufferedOutputStream = new BufferedOutputStream(mainFileOutputStream);
-            FileOutputStream indexFileOutputStream = new FileOutputStream(indexPath.toFile());
-            BufferedOutputStream indexFileBufferedOutputStream = new BufferedOutputStream(indexFileOutputStream)
-        ) {
-            Writer writer = new Writer(header);
-            writer.write(mainFileBufferedOutputStream, indexFileBufferedOutputStream, points);
-        }
+        Writer writer = new WriterFactory().create(header.shapeType());
+        Path path = writer.write(parentDirectory, baseFilename, header, dataset);
+        String indexFilename = path.toFile().getName();
+        indexFilename = Filenames.removeFileExtension(indexFilename);
+        indexFilename = Filenames.addFileExtension(indexFilename, Constants.INDEX_FILE_EXTENSION);
+        Path indexPath = Paths.get(parentDirectory.toString(), indexFilename);
 
-        assertEquals(header.fileLength().bytes(), mainPath.toFile().length(), "file length in bytes");
+        assertEquals(header.fileLength().bytes(), path.toFile().length(), "file length in bytes");
         assertEquals(header.createIndexHeader(points.size()).fileLength().bytes(), indexPath.toFile().length(), "file length in bytes");
+
+        // Set breakpoint above or comment out these lines to work with the generated files.
+        mainPath.toFile().delete();
+        indexPath.toFile().delete();
     }
 
     @Test
@@ -69,8 +73,9 @@ class WriterTest {
             BufferedOutputStream indexBufferedOutputStream = new BufferedOutputStream(indexOutputStream)
         ) {
             Header header = createMockHeader();
-            Writer writer = new Writer(header);
-            writer.write(mainBufferedOutputStream, indexBufferedOutputStream, points);
+            Dataset dataset = Dataset.pointsDataset(points);
+            WriterPoint writer = (WriterPoint)new WriterFactory().create(header.shapeType());
+            writer.write(header, dataset, mainBufferedOutputStream, indexBufferedOutputStream);
 
             testHeader(header, mainOutputStream.toByteArray());
             testPoints(points, mainOutputStream.toByteArray());
