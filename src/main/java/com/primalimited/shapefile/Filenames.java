@@ -5,6 +5,19 @@ package com.primalimited.shapefile;
  */
 public class Filenames {
     private static final String EXTENSION_PATTERN = "(?<!^)[.]" + "[^.]*$";
+    private static final String VALID_FILENAME_PATTERN = "^[A-za-z0-9.]{1,255}$";
+
+    /**
+     * Validate a filename (should not contain any illegal characters).
+     * @param filename filename to evaluate.
+     * @return true if this filename is valid, false otherwise.
+     */
+    public static boolean isFilenameValid(String filename) {
+        if (filename == null) {
+            return false;
+        }
+        return filename.matches(VALID_FILENAME_PATTERN);
+    }
 
     /**
      * Remove the extension from a filename.
