@@ -2,6 +2,9 @@ package com.primalimited.shapefile;
 
 import java.nio.ByteOrder;
 
+/**
+ * Helper class to define "Unused" file header value.
+ */
 public record FileValueUnused(int bytePosition) {
     private static final String UNUSED = "Unused";
 

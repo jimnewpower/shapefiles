@@ -4,6 +4,9 @@ import java.nio.ByteOrder;
 import java.util.Objects;
 import java.util.function.Supplier;
 
+/**
+ * Represents a double-precision, named file value with a specific file position.
+ */
 public record FileValueDouble(
         long bytePosition,
         String fieldDescription,

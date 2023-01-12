@@ -4,6 +4,9 @@ import java.nio.ByteOrder;
 import java.util.Objects;
 import java.util.function.Supplier;
 
+/**
+ * Represents an integer file value with a description and a file position.
+ */
 public record FileValueInt(
         long bytePosition,
         String fieldDescription,
