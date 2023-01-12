@@ -3,6 +3,9 @@ package com.primalimited.shapefile;
 import java.nio.ByteOrder;
 import java.util.Objects;
 
+/**
+ * Builder for file values (e.g. header values, etc.).
+ */
 public class FileValueBuilder {
     private static final int UNSPECIFIED_INT_VALUE = Integer.MIN_VALUE;
     private static final double UNSPECIFIED_DOUBLE_VALUE = Double.MIN_VALUE;
