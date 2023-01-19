@@ -1,7 +1,7 @@
 package com.primalimited.shapefile;
 
 /**
- * Record that represents a Point.
+ * Record that represents a Point (x, y).
  */
 public record Point(double x, double y) {
     public Point {

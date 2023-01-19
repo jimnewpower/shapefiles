@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Record that repesents a Polyline.
+ * Record that represents a Polyline.
  */
 public record Polyline(BoundingBox boundingBox, int numParts, List<Integer> partStartIndices, List<Point> points) {
     public Polyline(BoundingBox boundingBox, List<Point> points) {
