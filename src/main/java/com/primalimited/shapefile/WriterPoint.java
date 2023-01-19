@@ -49,14 +49,4 @@ class WriterPoint implements Writer {
 
         mainFileOutputStream.flush();
     }
-
-    @Override
-    public void writeIndexFile(
-        Header header,
-        Dataset dataset,
-        BufferedOutputStream indexFileOutputStream
-    ) throws IOException {
-        int nRecords = dataset.points().size();
-        writeIndexFile(header, nRecords, indexFileOutputStream);
-    }
 }

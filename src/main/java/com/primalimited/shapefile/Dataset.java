@@ -8,6 +8,7 @@ import java.util.List;
  */
 public interface Dataset {
     ShapeType shapeType();
+    int nRecords();
 
     default List<Point> points() {
         return Collections.emptyList();
@@ -27,6 +28,11 @@ public interface Dataset {
             }
 
             @Override
+            public int nRecords() {
+                return points.size();
+            }
+
+            @Override
             public List<Point> points() {
                 return points;
             }
@@ -41,6 +47,11 @@ public interface Dataset {
             }
 
             @Override
+            public int nRecords() {
+                return pointZs.size();
+            }
+
+            @Override
             public List<PointZ> pointZs() {
                 return pointZs;
             }
@@ -52,6 +63,11 @@ public interface Dataset {
             @Override
             public ShapeType shapeType() {
                 return ShapeType.POINTM;
+            }
+
+            @Override
+            public int nRecords() {
+                return pointMs.size();
             }
 
             @Override

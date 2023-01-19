@@ -34,13 +34,13 @@ public interface Writer {
         Path indexPath = createIndexPath(directory, baseFilename);
 
         try (
-            FileOutputStream mainFileOutputStream = new FileOutputStream(mainPath.toFile());
-            BufferedOutputStream mainFileBufferedOutputStream = new BufferedOutputStream(mainFileOutputStream);
-            FileOutputStream indexFileOutputStream = new FileOutputStream(indexPath.toFile());
-            BufferedOutputStream indexFileBufferedOutputStream = new BufferedOutputStream(indexFileOutputStream)
+//            FileOutputStream mainFileOutputStream = new FileOutputStream(mainPath.toFile());
+            BufferedOutputStream mainFileBufferedOutputStream = Streams.create(mainPath);
+//            FileOutputStream indexFileOutputStream = new FileOutputStream(indexPath.toFile());
+            BufferedOutputStream indexFileBufferedOutputStream = Streams.create(indexPath)
         ) {
             writeMainFile(header, dataset, mainFileBufferedOutputStream);
-            writeIndexFile(header, dataset, indexFileBufferedOutputStream);
+            writeIndexFile(header, dataset.nRecords(), indexFileBufferedOutputStream);
         }
 
         return mainPath;
@@ -57,19 +57,6 @@ public interface Writer {
         Header header,
         Dataset dataset,
         BufferedOutputStream mainFileOutputStream
-    ) throws IOException;
-
-    /**
-     * Write the index (.shx) file.
-     * @param header header information.
-     * @param dataset the shapefile record data.
-     * @param indexFileOutputStream the output stream.
-     * @throws IOException
-     */
-    void writeIndexFile(
-        Header header,
-        Dataset dataset,
-        BufferedOutputStream indexFileOutputStream
     ) throws IOException;
 
     default void writeIndexFile(Header header, int nRecords, BufferedOutputStream indexFileOutputStream) throws IOException {

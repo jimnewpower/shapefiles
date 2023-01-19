@@ -58,10 +58,4 @@ public class WriterPointZ implements Writer {
 
         mainFileOutputStream.flush();
     }
-
-    @Override
-    public void writeIndexFile(Header header, Dataset dataset, BufferedOutputStream indexFileOutputStream) throws IOException {
-        int nRecords = dataset.pointZs().size();
-        writeIndexFile(header, nRecords, indexFileOutputStream);
-    }
 }

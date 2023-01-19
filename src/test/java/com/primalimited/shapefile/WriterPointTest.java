@@ -77,7 +77,7 @@ class WriterPointTest {
 
             WriterPoint writer = (WriterPoint)new WriterFactory().create(header.shapeType());
             writer.writeMainFile(header, dataset, mainBufferedOutputStream);
-            writer.writeIndexFile(header, dataset, indexBufferedOutputStream);
+            writer.writeIndexFile(header, dataset.nRecords(), indexBufferedOutputStream);
 
             testHeader(header, mainOutputStream.toByteArray());
             testPoints(points, mainOutputStream.toByteArray());
