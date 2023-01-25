@@ -1,6 +1,8 @@
 package com.primalimited.shapefile;
 
 public class Constants {
+    private Constants() {}
+
     // File extensions.
     public static final String MAIN_FILE_EXTENSION = "shp";
     public static final String INDEX_FILE_EXTENSION = "shx";

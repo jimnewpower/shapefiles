@@ -1,7 +1,6 @@
 package com.primalimited.shapefile;
 
 import java.io.BufferedOutputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -34,9 +33,7 @@ public interface Writer {
         Path indexPath = createIndexPath(directory, baseFilename);
 
         try (
-//            FileOutputStream mainFileOutputStream = new FileOutputStream(mainPath.toFile());
             BufferedOutputStream mainFileBufferedOutputStream = Streams.create(mainPath);
-//            FileOutputStream indexFileOutputStream = new FileOutputStream(indexPath.toFile());
             BufferedOutputStream indexFileBufferedOutputStream = Streams.create(indexPath)
         ) {
             writeMainFile(header, dataset, mainFileBufferedOutputStream);

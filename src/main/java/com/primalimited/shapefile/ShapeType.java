@@ -27,19 +27,19 @@ public enum ShapeType {
     POLYLINE(3, true) {
         @Override
         ByteValue recordHeader() {
-            throw new IllegalStateException(String.format("Shape type %s has variable-length record headers.", this));
+            throw new IllegalStateException(String.format(HAS_VARIABLE_LENGTH_RECORD_HEADERS, this));
         }
     },
     POLYGON(5, true) {
         @Override
         ByteValue recordHeader() {
-            throw new IllegalStateException(String.format("Shape type %s has variable-length record headers.", this));
+            throw new IllegalStateException(String.format(HAS_VARIABLE_LENGTH_RECORD_HEADERS, this));
         }
     },
     MULTIPOINT(8, true) {
         @Override
         ByteValue recordHeader() {
-            throw new IllegalStateException(String.format("Shape type %s has variable-length record headers.", this));
+            throw new IllegalStateException(String.format(HAS_VARIABLE_LENGTH_RECORD_HEADERS, this));
         }
     },
     POINTZ(11, false) {
@@ -108,6 +108,7 @@ public enum ShapeType {
         }
     };
 
+    public static final String HAS_VARIABLE_LENGTH_RECORD_HEADERS = "Shape type %s has variable-length record headers.";
     private static Map<Integer, ShapeType> map = null;
 
     public static ShapeType getFromValue(int value) {

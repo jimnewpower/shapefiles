@@ -68,9 +68,7 @@ public interface Bounds {
      * false otherwise.
      */
     default boolean contains(double value) {
-        if (value >= getMin() && value <= getMax())
-            return true;
-        return false;
+        return value >= getMin() && value <= getMax();
     }
 
     /**
@@ -160,8 +158,6 @@ public interface Bounds {
     static boolean valid(double min, double max) {
         if (Double.isNaN(min) || Double.isNaN(max) || Double.isInfinite(min) || Double.isInfinite(max))
             return false;
-        if (min > max)
-            return false;
-        return true;
+        return min <= max;
     }
 }
