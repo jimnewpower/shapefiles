@@ -1,4 +1,4 @@
-![build](https://github.com/jimnewpower/shapefiles/.github/workflows/maven.yml/badge.svg)
+[![Java CI with Maven](https://github.com/jimnewpower/shapefiles/actions/workflows/maven.yml/badge.svg)](https://github.com/jimnewpower/shapefiles/actions/workflows/maven.yml)
 
 # shapefiles
 ESRI Shapefile importer/exporter
