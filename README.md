@@ -1,3 +1,5 @@
+![build](https://github.com/jimnewpower/docs/actions/workflows/main.yml/badge.svg)
+
 # shapefiles
 ESRI Shapefile importer/exporter
 
