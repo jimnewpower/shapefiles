@@ -12,6 +12,29 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class HeaderTest {
 
+    private static final String[] INTEGER_FIELD_DESCRIPTIONS = new String[] {
+            "Byte 0, Field 'File Code', Value 9994, Type Integer, Byte Order BIG_ENDIAN",
+            "Byte 4, Field 'Unused', Value 0, Type Integer, Byte Order BIG_ENDIAN",
+            "Byte 8, Field 'Unused', Value 0, Type Integer, Byte Order BIG_ENDIAN",
+            "Byte 12, Field 'Unused', Value 0, Type Integer, Byte Order BIG_ENDIAN",
+            "Byte 16, Field 'Unused', Value 0, Type Integer, Byte Order BIG_ENDIAN",
+            "Byte 20, Field 'Unused', Value 0, Type Integer, Byte Order BIG_ENDIAN",
+            "Byte 24, Field 'File Length', Value 106, Type Integer, Byte Order BIG_ENDIAN",
+            "Byte 28, Field 'Version', Value 1000, Type Integer, Byte Order LITTLE_ENDIAN",
+            "Byte 32, Field 'Shape Type', Value 1, Type Integer, Byte Order LITTLE_ENDIAN"
+    };
+
+    private static final String[] DOUBLE_FIELD_DESCRIPTIONS = new String[] {
+            "Byte 36, Field 'Xmin', Value -105.0, Type Double, Byte Order LITTLE_ENDIAN",
+            "Byte 44, Field 'Ymin', Value 35.0, Type Double, Byte Order LITTLE_ENDIAN",
+            "Byte 52, Field 'Xmax', Value -100.0, Type Double, Byte Order LITTLE_ENDIAN",
+            "Byte 60, Field 'Ymax', Value 45.0, Type Double, Byte Order LITTLE_ENDIAN",
+            "Byte 68, Field 'Zmin', Value 0.0, Type Double, Byte Order LITTLE_ENDIAN",
+            "Byte 76, Field 'Zmax', Value 4.0, Type Double, Byte Order LITTLE_ENDIAN",
+            "Byte 84, Field 'Mmin', Value 5.0, Type Double, Byte Order LITTLE_ENDIAN",
+            "Byte 92, Field 'Mmax', Value 10.0, Type Double, Byte Order LITTLE_ENDIAN"
+    };
+
     private Header createMockHeader() {
         ShapeType shapeType = ShapeType.POINT;
         List<Point> points = List.of(
@@ -37,16 +60,17 @@ class HeaderTest {
                 .filter(fv -> fv.byteOrder() == ByteOrder.BIG_ENDIAN)
                 .flatMapToInt(fv -> IntStream.of(fv.value()))
                 .toArray();
-        System.out.println(Arrays.toString(bigEndianValues));
+        assertEquals("[9994, 0, 0, 0, 0, 0, 106]", Arrays.toString(bigEndianValues));
 
         int[] littleEndianValues = list.stream()
                 .filter(fv -> fv.byteOrder() == ByteOrder.LITTLE_ENDIAN)
                 .flatMapToInt(fv -> IntStream.of(fv.value()))
                 .toArray();
-        System.out.println(Arrays.toString(littleEndianValues));
+        assertEquals("[1000, 1]", Arrays.toString(littleEndianValues));
 
+        int count = 0;
         for (FileValueInt fileValueInt: list)
-            System.out.println(fileValueInt);
+            assertEquals(INTEGER_FIELD_DESCRIPTIONS[count++], fileValueInt.toString());
     }
 
     @Test
@@ -56,9 +80,10 @@ class HeaderTest {
         double[] values = list.stream()
                 .flatMapToDouble(fv -> DoubleStream.of(fv.value()))
                 .toArray();
-        System.out.println(Arrays.toString(values));
+        assertEquals("[-105.0, 35.0, -100.0, 45.0, 0.0, 4.0, 5.0, 10.0]", Arrays.toString(values));
 
+        int count = 0;
         for (FileValueDouble fileValueDouble: list)
-            System.out.println(fileValueDouble);
+            assertEquals(DOUBLE_FIELD_DESCRIPTIONS[count++], fileValueDouble.toString());
     }
 }
